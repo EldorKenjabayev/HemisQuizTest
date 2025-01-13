@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Тесты из TXT файла</title>
+  <style>
+    .hidden { display: none; }
+    .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div id="uploadSection">
+      <h2>Загрузите TXT файл</h2>
+      <input type="file" id="fileInput" accept=".txt"><br>
+      <p id="questionCount">Количество вопросов: 0</p>
+      <label for="questionNumber">Сколько вопросов вы хотите:</label>
+      <input type="number" id="questionNumber" min="1"><br>
+      <button id="generateButton">Создать тест</button>
+    </div>
+    <div id="testSection" class="hidden">
+      <h2>Ваш тест</h2>
+      <form id="testForm"></form>
+      <button id="submitButton">Проверить ответы</button>
+    </div>
+    <div id="resultSection" class="hidden">
+      <h2>Результаты</h2>
+      <p id="resultText"></p>
+      <button id="retryButton">Пройти заново</button>
+    </div>
+  </div>
+  <script src="./script.js"></script>
+</body>
+</html>
