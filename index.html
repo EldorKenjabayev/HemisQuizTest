@@ -5,31 +5,211 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Тесты из TXT файла</title>
   <style>
-    .hidden { display: none; }
-    .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background-color: #f5f5f5;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: #fff;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      padding: 20px;
+      max-width: 600px;
+      width: 100%;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      font-size: 1.5em;
+      color: #007BFF;
+      text-align: center;
+    }
+
+    input[type="file"],
+    input[type="number"],
+    button {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1em;
+    }
+
+    input[type="file"] {
+      background: #f0f0f0;
+      cursor: pointer;
+    }
+
+    button {
+      background-color: #007BFF;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .result {
+      font-size: 1.2em;
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    label {
+      font-weight: bold;
+    }
+
+    .question {
+      margin-bottom: 15px;
+    }
+
+    .answers {
+      margin-left: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .answers div {
+      background: #f9f9f9;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      transition: background-color 0.3s, transform 0.2s;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+    }
+
+    .answers div:hover {
+      background-color: #007BFF;
+      color: #fff;
+      transform: translateY(-2px);
+    }
+
+    .answers label {
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+
+    .answers input {
+      margin-right: 10px;
+      accent-color: #007BFF;
+    }
+
+    .retry {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .retry button {
+      width: auto;
+      padding: 10px 20px;
+    }
+
+    .answer-option {
+      background: #f9f9f9;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      transition: background-color 0.3s, transform 0.2s;
+      cursor: pointer;
+    }
+    
+    .answer-option:hover {
+      background-color: #007BFF;
+      color: #fff;
+      transform: translateY(-2px);
+    }
+    
+    .answer-option input {
+      margin-right: 10px;
+      accent-color: #007BFF;
+    }
+    
   </style>
 </head>
 <body>
   <div class="container">
     <div id="uploadSection">
       <h2>Загрузите TXT файл</h2>
-      <input type="file" id="fileInput" accept=".txt"><br>
+      <input type="file" id="fileInput" accept=".txt">
       <p id="questionCount">Количество вопросов: 0</p>
       <label for="questionNumber">Сколько вопросов вы хотите:</label>
-      <input type="number" id="questionNumber" min="1"><br>
+      <input type="number" id="questionNumber" min="1">
       <button id="generateButton">Создать тест</button>
     </div>
+
     <div id="testSection" class="hidden">
       <h2>Ваш тест</h2>
       <form id="testForm"></form>
       <button id="submitButton">Проверить ответы</button>
     </div>
+
     <div id="resultSection" class="hidden">
       <h2>Результаты</h2>
-      <p id="resultText"></p>
-      <button id="retryButton">Пройти заново</button>
+      <p id="resultText" class="result"></p>
+      <div class="retry">
+        <button id="retryButton">Пройти заново</button>
+      </div>
     </div>
   </div>
   <script src="./script.js"></script>
+  <script>
+    function createTestPage(selectedQuestions) {
+      document.getElementById('uploadSection').classList.add('hidden');
+      const testSection = document.getElementById('testSection');
+      const testForm = document.getElementById('testForm');
+    
+      testForm.innerHTML = ''; // Очистка формы
+    
+      selectedQuestions.forEach((question, index) => {
+        const questionElement = document.createElement('div');
+        questionElement.className = 'question';
+        questionElement.innerHTML = `<p><strong>${index + 1}. ${question.question}</strong></p>`;
+    
+        const shuffledAnswers = [...question.answers];
+        shuffleArray(shuffledAnswers); // Перемешиваем ответы
+    
+        shuffledAnswers.forEach(answer => {
+          const answerElement = document.createElement('div');
+          answerElement.className = 'answer-option'; // Добавляем класс для оформления
+          answerElement.innerHTML = `
+            <label>
+              <input type="radio" name="question-${index}" value="${answer.correct}">
+              ${answer.text}
+            </label>
+          `;
+          questionElement.appendChild(answerElement);
+        });
+    
+        testForm.appendChild(questionElement);
+      });
+    
+      testSection.classList.remove('hidden');
+    }
+    
+  </script>
 </body>
 </html>

@@ -68,6 +68,7 @@ function createTestPage(selectedQuestions) {
 
   selectedQuestions.forEach((question, index) => {
     const questionElement = document.createElement('div');
+    questionElement.className = 'question';
     questionElement.innerHTML = `<p><strong>${index + 1}. ${question.question}</strong></p>`;
 
     const shuffledAnswers = [...question.answers];
@@ -75,6 +76,7 @@ function createTestPage(selectedQuestions) {
 
     shuffledAnswers.forEach(answer => {
       const answerElement = document.createElement('div');
+      answerElement.className = 'answer-option'; // Добавляем класс для оформления
       answerElement.innerHTML = `
         <label>
           <input type="radio" name="question-${index}" value="${answer.correct}">
@@ -89,6 +91,7 @@ function createTestPage(selectedQuestions) {
 
   testSection.classList.remove('hidden');
 }
+
 
 function checkAnswers() {
   const form = document.getElementById('testForm');
